@@ -1,6 +1,5 @@
 import bios
 import json
-import argparse
 import glob
 
 from matatika.dataset import Dataset

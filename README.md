@@ -25,7 +25,7 @@ The script will then add the `rawData` to the loaded `.yml` or `.yaml` (or defau
 
 The script will then take the newly created dataset object and convert into a `.html` file containing the chart with the datasets filename. 
 
-The output `.html` file will be place in the following location: current working directory/datasets/{DATASOURCE}/{dataset_filename}.html
+The output `.html` file will be place in the following location: `./datasets/{datasource-name}/{dataset_filename}.html`
 
 #### `make datasets`
 

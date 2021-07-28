@@ -22,7 +22,7 @@ os.chdir(os.path.dirname(__file__))
 
 for file in os.listdir("."):
     if file.endswith(".yaml") or file.endswith('.yml'):
-        output_dir = os.getenv("MATATIKA_IMPORT_DATASOURCE") or "pipeline"
+        output_dir = os.getenv("MATATIKA_IMPORT_DATASOURCE") or "html_charts"
 
         yaml_dict = bios.read(file)
         

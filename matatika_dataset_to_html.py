@@ -11,30 +11,36 @@ from iplotter import ChartJSPlotter
 
 plotter = ChartJSPlotter()
 
+try:
+    raw_data_file = bios.read("dataset_rawdata.yaml")
+except:
+    print("No dataset_rawdata.yaml file found")
+
+# Set the cwd to this python files location after trying to get raw_data above.
+# This is here to allow the makefile with a different cwd to work.
+os.chdir(os.path.dirname(__file__))
+
 for file in os.listdir("."):
     if file.endswith(".yaml") or file.endswith('.yml'):
+        output_dir = os.getenv("datasource") or "pipeline"
+
         yaml_dict = bios.read(file)
         
         new_dataset = Dataset.from_dict(yaml_dict)
 
-        #Try to get env var of raw data
-        try:
-            yaml_file_name = Path(file).stem.upper()
-        
-            my_dataset = chartjs.to_chart(new_dataset, json.loads(os.getenv(yaml_file_name)))
-        
-        except:
-            #Try to get raw data from the dataset yml
+        yaml_file_name = Path(file).stem
+
+        if raw_data_file[yaml_file_name]:
+            my_dataset = chartjs.to_chart(new_dataset, json.loads(raw_data_file[yaml_file_name]))
+        else:
             try:
                 my_dataset = chartjs.to_chart(new_dataset, json.loads(new_dataset.raw_data))
             except:
-                print('Error getting raw data from either the enviroment variable or the dataset yaml file itself.')
+                print(f"No raw data found for dataset {file}")
                 sys.exit(1)
         
         output_dir = os.getenv("datasource") or "pipeline"
 
-        os.mkdir('datasets')
+        os.mkdir(output_dir)
 
-        os.mkdir('datasets/' + output_dir)
-
-        plotter.save(**my_dataset, filename='datasets/' + output_dir + '/' + yaml_dict['title'], keep_html=True)
+        plotter.save(**my_dataset, filename=output_dir + '/' + yaml_dict['title'], keep_html=True)

@@ -38,8 +38,6 @@ for file in os.listdir("."):
             except:
                 print(f"No raw data found for dataset {file}")
                 sys.exit(1)
-        
-        output_dir = os.getenv("datasource") or "pipeline"
 
         if not os.path.isdir(output_dir):
             os.mkdir(output_dir)

@@ -50,6 +50,6 @@ for file in os.listdir("."):
                 os.mkdir(output_dir + '/html_charts/')
 
         if output_dir != "html_charts":
-            plotter.save(**my_dataset, filename=output_dir + "/html_charts/" + yaml_dict["title"], keep_html=True)
+            plotter.save(**my_dataset, filename=output_dir + "/html_charts/" + yaml_file_name.title().replace("-", "_"), keep_html=True)
         else:
-            plotter.save(**my_dataset, filename=output_dir + "/" + yaml_dict["title"], keep_html=True)
+            plotter.save(**my_dataset, filename=output_dir + "/" + yaml_file_name.title().replace("-", "_"), keep_html=True)

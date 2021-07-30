@@ -11,17 +11,18 @@ from iplotter import ChartJSPlotter
 
 plotter = ChartJSPlotter()
 
-try:
-    raw_data_file = bios.read("dataset_rawdata.yaml")
-except:
-    print("No dataset_rawdata.yaml file found")
-
-# Set the cwd to this python files location after trying to get raw_data above.
-# This is here to allow the makefile with a different cwd to work.
 os.chdir(os.path.dirname(__file__))
 
+# Look for raw data included in a analzye-{datasouce} directory
+if os.path.isdir("../../../rawdata"):
+    rawdata = Path("../../../rawdata")
+    print("rawdata directory found")
+else:
+    rawdata = False
+    print("rawdata directory not found")
+
 for file in os.listdir("."):
-    if file.endswith(".yaml") or file.endswith('.yml'):
+    if file.endswith(".yaml") or file.endswith(".yml"):
         output_dir = os.getenv("MATATIKA_IMPORT_DATASOURCE") or "html_charts"
 
         yaml_dict = bios.read(file)
@@ -29,9 +30,13 @@ for file in os.listdir("."):
         new_dataset = Dataset.from_dict(yaml_dict)
 
         yaml_file_name = Path(file).stem
+        
+        if rawdata:
+            for rawdata_file in os.listdir(rawdata):
+                if rawdata_file == file:
+                    imported_rawdata_file = bios.read(os.path.join(rawdata, rawdata_file))
 
-        if raw_data_file[yaml_file_name]:
-            my_dataset = chartjs.to_chart(new_dataset, json.loads(raw_data_file[yaml_file_name]))
+                    my_dataset = chartjs.to_chart(new_dataset, json.loads(imported_rawdata_file[yaml_file_name]))
         else:
             try:
                 my_dataset = chartjs.to_chart(new_dataset, json.loads(new_dataset.raw_data))

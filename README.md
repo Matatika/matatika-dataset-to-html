@@ -22,6 +22,8 @@ invoke the script by using the following:
 `<path_to_datasets>` is always required
 `<path_to_rawdata>` is optional, but your datasets need rawdata either from an external path or inside the dataset for the html conversion to display anything.
 
+If you do not supply rawdata either inside the dataset or in another directory you specify inline, you will get a message printed out that the selected dataset has no rawdata and nothing will be converted. This means if there are some datasets to convert with rawdata and others without, it will print a message about some datasets not having any rawdata, but still convert those that do.
+
 #### Running the script yourself
 
 This script looks for all `.yml` or `.yaml` files in the target directory and loops through them.

@@ -59,11 +59,14 @@ for file in path_to_datasets.iterdir():
 
                         my_dataset_chart = chartjs.to_chart(new_dataset, json.loads(imported_rawdata_file[yaml_file_name]))
 
-                        save_converted_chart(my_dataset_chart, yaml_file_name)
         else:
             try:
                 my_dataset_chart = chartjs.to_chart(new_dataset, json.loads(new_dataset.raw_data))
-                save_converted_chart(my_dataset_chart, yaml_file_name)
             except:
                 print(f"No raw data found for dataset {file}")
+
+        try:
+            save_converted_chart(my_dataset_chart, yaml_file_name)
+        except:
+                print(f"Did not convert {file}")
     

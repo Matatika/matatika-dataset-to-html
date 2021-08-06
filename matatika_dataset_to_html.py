@@ -25,6 +25,9 @@ try:
 except:
     path_to_rawdata = False
 
+def save_converted_chart(my_dataset_chart, yaml_file_name):
+    yaml_file_name = yaml_file_name.title().replace("-", "_")
+    plotter.save(**my_dataset_chart, filename=str(output_path.joinpath(yaml_file_name)), keep_html=True)
 
 for file in path_to_datasets.iterdir():
     if file.name.endswith(".yaml") or file.name.endswith(".yml"):
@@ -55,13 +58,12 @@ for file in path_to_datasets.iterdir():
                         imported_rawdata_file = bios.read(str(path_to_rawdata.joinpath(rawdata_file.name).absolute()))
 
                         my_dataset_chart = chartjs.to_chart(new_dataset, json.loads(imported_rawdata_file[yaml_file_name]))
+
+                        save_converted_chart(my_dataset_chart, yaml_file_name)
         else:
             try:
                 my_dataset_chart = chartjs.to_chart(new_dataset, json.loads(new_dataset.raw_data))
+                save_converted_chart(my_dataset_chart, yaml_file_name)
             except:
                 print(f"No raw data found for dataset {file}")
-                sys.exit(1)
-
-        yaml_file_name = yaml_file_name.title().replace("-", "_")
-        
-        plotter.save(**my_dataset_chart, filename=str(output_path.joinpath(yaml_file_name)), keep_html=True)
+    

@@ -31,12 +31,8 @@ def save_converted_chart(my_dataset_chart, yaml_file_name):
 
 for file in path_to_datasets.iterdir():
     if file.name.endswith(".yaml") or file.name.endswith(".yml"):
-        output_dir = os.getenv("MATATIKA_IMPORT_DATASOURCE")
 
         output_path = path_to_datasets
-
-        if output_dir:
-            output_path = path_to_datasets.joinpath(output_dir)
 
         output_path = output_path.joinpath("html_charts")
 
